@@ -1,0 +1,43 @@
+[Unit]
+Description=maccel mouse acceleration daemon
+Documentation=https://github.com/im-tyler/maccel
+After=local-fs.target systemd-logind.service
+Wants=systemd-logind.service
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/maccel run
+Restart=on-failure
+RestartSec=2
+
+# maccel needs read access to /dev/input/event* (grab the source device)
+# and write access to /dev/uinput (create the virtual pointer).
+# On most systems both require root, OR membership in the `input` group
+# plus a udev rule granting `uinput` access. The simpler path is root.
+User=root
+Group=root
+
+# Read config from /etc/maccel/config.toml (override via Environment).
+Environment=MACCEL_CONFIG=/etc/maccel/config.toml
+Environment=RUST_LOG=info
+
+# Hardening — maccel needs very little. Keep most restrictions enabled.
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+PrivateDevices=false
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictAddressFamilies=AF_UNIX
+RestrictNamespaces=true
+LockPersonality=true
+RestrictRealtime=true
+RestrictSUIDSGID=true
+RemoveIPC=true
+CapabilityBoundingSet=
+AmbientCapabilities=
+
+[Install]
+WantedBy=multi-user.target

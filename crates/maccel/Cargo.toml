@@ -23,6 +23,7 @@ serde = { version = "1", features = ["derive"] }
 toml = "0.8"
 evdev = "0.12"
 nix = { version = "0.27", features = ["fs"] }
+ctrlc = { version = "3", features = ["termination"] }
 
 [dev-dependencies]
 pretty_assertions = "1"

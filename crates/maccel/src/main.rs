@@ -6,8 +6,10 @@ mod config;
 #[allow(dead_code)]
 mod curve;
 mod daemon;
-#[allow(dead_code)]
 mod device;
+mod pipeline;
+#[allow(dead_code)]
+mod uinput;
 
 #[derive(Parser)]
 #[command(
@@ -33,6 +35,8 @@ enum Commands {
         #[command(subcommand)]
         command: ProfileCommands,
     },
+    /// Print the default TOML config (pipe to a file to use as a starting point)
+    Init,
 }
 
 #[derive(Subcommand)]
@@ -57,9 +61,10 @@ fn main() -> Result<()> {
         Some(Commands::Run) => daemon::run()?,
         Some(Commands::Status) => print_status()?,
         Some(Commands::Devices) => device::list_mice()?,
+        Some(Commands::Init) => print_default_config()?,
         Some(Commands::Profile { command }) => match command {
             ProfileCommands::Set { name } => {
-                println!("Setting profile to '{name}' — not yet implemented (scaffold)");
+                println!("Setting profile to '{name}' — runtime profile switching arrives in v0.2");
             }
             ProfileCommands::List => {
                 println!("Available presets:");
@@ -74,8 +79,13 @@ fn main() -> Result<()> {
 }
 
 fn print_status() -> Result<()> {
-    println!("maccel v0.1.0-dev (scaffold)");
+    println!("maccel v0.1.0-dev");
     println!("Default curve: {:?}", curve::Curve::macos());
-    println!("Daemon: not running (no daemon implementation yet)");
+    println!("Daemon: not running (run `maccel run` to start)");
+    Ok(())
+}
+
+fn print_default_config() -> Result<()> {
+    print!("{}", config::Config::defaults_as_toml()?);
     Ok(())
 }
