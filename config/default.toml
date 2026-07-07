@@ -1,0 +1,17 @@
+# maccel default configuration — reference, not auto-loaded.
+# Live config is read from /etc/maccel/config.toml (or --config <path>).
+
+[curve]
+# Approximation of macOS pointer acceleration.
+# Tuning against real hardware happens in v0.2; see PLAN.md.
+base_gain = 1.0        # multiplier in the linear region (v < threshold)
+threshold = 5.5        # velocity in counts/ms above which acceleration kicks in
+exponent = 1.5         # curve aggressiveness above threshold
+
+[devices]
+# Empty `allow` = auto-detect all pointer devices.
+# List specific paths to manage only those.
+# allow = ["/dev/input/event3", "/dev/input/event7"]
+# deny = ["/dev/input/event0"]
+allow = []
+deny = []

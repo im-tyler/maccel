@@ -1,0 +1,28 @@
+[package]
+name = "maccel"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+repository.workspace = true
+description = "Mouse acceleration daemon for Linux — brings macOS-style pointer feel to any compositor"
+keywords = ["linux", "mouse", "acceleration", "evdev", "uinput"]
+categories = ["command-line-utilities", "hardware-support"]
+
+[[bin]]
+name = "maccel"
+path = "src/main.rs"
+
+[dependencies]
+clap = { version = "4", features = ["derive"] }
+anyhow = "1"
+thiserror = "1"
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+serde = { version = "1", features = ["derive"] }
+toml = "0.8"
+evdev = "0.12"
+nix = { version = "0.27", features = ["fs"] }
+
+[dev-dependencies]
+pretty_assertions = "1"
